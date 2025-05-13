@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { BeamsBackground } from "@/components/ui/beams-background";
 import Header from "@/components/header/Header";
@@ -6,11 +7,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SendHorizontal, Plus, Search, Globe, XCircle } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import JournalPage from "@/components/journal/JournalPage";
+
 const Dashboard: React.FC = () => {
   const [message, setMessage] = useState("");
+  const [activeView, setActiveView] = useState<"home" | "journal">("home");
+  
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
+  
   return <BeamsBackground intensity="medium" className="min-h-screen">
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
@@ -29,13 +35,37 @@ const Dashboard: React.FC = () => {
           </div>
           
           <div className="px-4 py-3">
-            <Button variant="default" className="w-full flex gap-2 bg-[rgba(65,105,225,1)] hover:bg-[rgba(65,105,225,0.8)]">
-              <Plus size={16} /> New chat
+            <Button 
+              variant="default" 
+              className="w-full flex gap-2 bg-[rgba(65,105,225,1)] hover:bg-[rgba(65,105,225,0.8)]"
+              onClick={() => setActiveView("journal")}
+            >
+              <Plus size={16} /> New journal entry
             </Button>
             
             <div className="relative mt-3">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
               <Input placeholder="Search conversations..." className="pl-8 bg-black/30 border-white/10 text-white" />
+            </div>
+          </div>
+          
+          <div className="px-4 py-2">
+            <h3 className="text-sm text-gray-400 mb-2">Navigation</h3>
+            <div className="space-y-1">
+              <Button 
+                variant={activeView === "home" ? "secondary" : "ghost"} 
+                className="w-full justify-start text-gray-300 hover:text-white"
+                onClick={() => setActiveView("home")}
+              >
+                Home
+              </Button>
+              <Button 
+                variant={activeView === "journal" ? "secondary" : "ghost"} 
+                className="w-full justify-start text-gray-300 hover:text-white"
+                onClick={() => setActiveView("journal")}
+              >
+                Journal
+              </Button>
             </div>
           </div>
           
@@ -84,134 +114,142 @@ const Dashboard: React.FC = () => {
           
           <div className="flex-1 overflow-auto p-4">
             <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white">Good day! How may I assist you today?</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Feature Cards Row 1 */}
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="p-4 flex items-start">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
-                        <Globe size={24} />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="font-semibold text-white">Celebrate</h3>
-                        <p className="text-sm text-gray-400">Recognize your effort or achievement today.</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
-                        <div className="w-10 h-10 rounded-full bg-purple-300/30 flex items-center justify-center">
-                          <span className="text-purple-200">E</span>
+              {activeView === "home" ? (
+                <>
+                  <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-white">Good day! How may I assist you today?</h2>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Feature Cards Row 1 */}
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="p-4 flex items-start">
+                          <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
+                            <Globe size={24} />
+                          </div>
+                          <div className="ml-4">
+                            <h3 className="font-semibold text-white">Celebrate</h3>
+                            <p className="text-sm text-gray-400">Recognize your effort or achievement today.</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-3 p-4">
-                        <h3 className="text-white font-medium">"Explain"</h3>
-                        <p className="text-sm text-gray-400">Quantum computing in simple terms</p>
-                      </div>
-                      <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
-                        <Button variant="ghost" className="h-full w-full text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Feature Cards Row 2 */}
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="p-4 flex items-start">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="font-semibold text-white">Warning</h3>
-                        <p className="text-sm text-gray-400">Reflect on a risk or blind spot coming up.</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
-                        <div className="w-10 h-10 rounded-full bg-orange-300/30 flex items-center justify-center">
-                          <span className="text-orange-200">R</span>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full bg-purple-300/30 flex items-center justify-center">
+                              <span className="text-purple-200">E</span>
+                            </div>
+                          </div>
+                          <div className="col-span-3 p-4">
+                            <h3 className="text-white font-medium">"Explain"</h3>
+                            <p className="text-sm text-gray-400">Quantum computing in simple terms</p>
+                          </div>
+                          <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
+                            <Button variant="ghost" className="h-full w-full text-gray-400">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </Button>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-3 p-4">
-                        <h3 className="text-white font-medium">"Remember"</h3>
-                        <p className="text-sm text-gray-400">Saves your conversation history</p>
-                      </div>
-                      <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
-                        <Button variant="ghost" className="h-full w-full text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                {/* Feature Cards Row 3 */}
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="p-4 flex items-start">
-                      <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
-                        <XCircle size={24} />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="font-semibold text-white">Nudge</h3>
-                        <p className="text-sm text-gray-400">Suggest a micro next step for your journey.</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
-                  <CardContent className="p-0">
-                    <div className="grid grid-cols-5">
-                      <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
-                        <div className="w-10 h-10 rounded-full bg-red-300/30 flex items-center justify-center">
-                          <span className="text-red-200">M</span>
+                      </CardContent>
+                    </Card>
+                    
+                    {/* Feature Cards Row 2 */}
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="p-4 flex items-start">
+                          <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                          </div>
+                          <div className="ml-4">
+                            <h3 className="font-semibold text-white">Warning</h3>
+                            <p className="text-sm text-gray-400">Reflect on a risk or blind spot coming up.</p>
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-3 p-4">
-                        <h3 className="text-white font-medium">"May"</h3>
-                        <p className="text-sm text-gray-400">Occasionally generate incorrect information</p>
-                      </div>
-                      <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
-                        <Button variant="ghost" className="h-full w-full text-gray-400">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full bg-orange-300/30 flex items-center justify-center">
+                              <span className="text-orange-200">R</span>
+                            </div>
+                          </div>
+                          <div className="col-span-3 p-4">
+                            <h3 className="text-white font-medium">"Remember"</h3>
+                            <p className="text-sm text-gray-400">Saves your conversation history</p>
+                          </div>
+                          <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
+                            <Button variant="ghost" className="h-full w-full text-gray-400">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    {/* Feature Cards Row 3 */}
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="p-4 flex items-start">
+                          <div className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 text-white">
+                            <XCircle size={24} />
+                          </div>
+                          <div className="ml-4">
+                            <h3 className="font-semibold text-white">Nudge</h3>
+                            <p className="text-sm text-gray-400">Suggest a micro next step for your journey.</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-black/20 backdrop-blur-lg border border-white/10">
+                      <CardContent className="p-0">
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-1 border-r border-white/10 p-4 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-full bg-red-300/30 flex items-center justify-center">
+                              <span className="text-red-200">M</span>
+                            </div>
+                          </div>
+                          <div className="col-span-3 p-4">
+                            <h3 className="text-white font-medium">"May"</h3>
+                            <p className="text-sm text-gray-400">Occasionally generate incorrect information</p>
+                          </div>
+                          <div className="col-span-1 border-l border-white/10 flex items-center justify-center">
+                            <Button variant="ghost" className="h-full w-full text-gray-400">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </>
+              ) : (
+                <JournalPage />
+              )}
             </div>
           </div>
           
           {/* Input Area */}
-          <div className="p-4 border-t border-white/10">
-            <div className="max-w-3xl mx-auto">
-              <div className="relative">
-                <Input placeholder="What's in your mind?..." className="pr-12 py-6 bg-black/30 border-white/10 text-white rounded-full" value={message} onChange={handleMessageChange} />
-                <Button size="icon" className="absolute right-1 top-1 bottom-1 bg-[rgba(65,105,225,1)] hover:bg-[rgba(65,105,225,0.8)] rounded-full h-auto">
-                  <SendHorizontal className="h-5 w-5" />
-                  <span className="sr-only">Send message</span>
-                </Button>
+          {activeView === "home" && (
+            <div className="p-4 border-t border-white/10">
+              <div className="max-w-3xl mx-auto">
+                <div className="relative">
+                  <Input placeholder="What's in your mind?..." className="pr-12 py-6 bg-black/30 border-white/10 text-white rounded-full" value={message} onChange={handleMessageChange} />
+                  <Button size="icon" className="absolute right-1 top-1 bottom-1 bg-[rgba(65,105,225,1)] hover:bg-[rgba(65,105,225,0.8)] rounded-full h-auto">
+                    <SendHorizontal className="h-5 w-5" />
+                    <span className="sr-only">Send message</span>
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </BeamsBackground>;

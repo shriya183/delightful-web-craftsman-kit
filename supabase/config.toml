@@ -1,1 +1,5 @@
+
 project_id = "ubhqbclheuodqpqvvlpw"
+
+[functions.generate-reflections]
+verify_jwt = true
