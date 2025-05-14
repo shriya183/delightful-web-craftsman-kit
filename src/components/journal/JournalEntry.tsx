@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/sonner";
+import { toast } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
 
 interface Reflection {
@@ -28,7 +28,6 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [entryId, setEntryId] = useState<string | null>(existingEntry?.id || null);
-  const toast = useToast();
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
@@ -100,7 +99,7 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
 
         if (insertError) throw insertError;
 
-        setReflections(savedReflections || []);
+        setReflections(savedReflections as Reflection[]);
         toast.success("Journal entry saved with reflections");
       }
     } catch (error: any) {
@@ -126,7 +125,12 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
         }
         
         if (data) {
-          setReflections(data);
+          // Ensure the types are correct
+          const typedReflections = data.map((r) => ({
+            ...r,
+            type: r.type as 'celebration' | 'warning' | 'nudge'
+          }));
+          setReflections(typedReflections);
         }
       }
     };
