@@ -1,7 +1,5 @@
-
 import React, { useState } from "react";
 import { BeamsBackground } from "@/components/ui/beams-background";
-import Header from "@/components/header/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -104,7 +102,7 @@ const Dashboard: React.FC = () => {
         
         {/* Main Content */}
         <div className="flex-1 flex flex-col h-screen">
-          <Header />
+          {/* Header removed from here */}
           
           <div className="flex-1 overflow-auto p-4">
             <div className="max-w-4xl mx-auto">

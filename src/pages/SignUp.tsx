@@ -19,7 +19,6 @@ import GoogleIcon from "@/components/icons/GoogleIcon";
 import { toast } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { BeamsBackground } from "@/components/ui/beams-background";
-import Header from "@/components/header/Header";
 import { cleanupAuthState } from "@/hooks/useSupabaseAuth";
 
 // Define form schema
@@ -130,7 +129,6 @@ const SignUp: React.FC = () => {
 
   return (
     <BeamsBackground intensity="medium" className="min-h-screen">
-      <Header />
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-black/20 backdrop-blur-lg border border-white/10 dark:bg-black/20 dark:backdrop-blur-lg dark:border-white/10 light:bg-white/90 light:backdrop-blur-lg light:border-black/10 relative">
           <Button 
