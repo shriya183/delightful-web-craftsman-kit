@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/sonner";
+import { toast } from "@/components/ui/sonner"; // Corrected this import
 import { Loader2 } from "lucide-react";
 
 interface Reflection {
@@ -28,7 +28,6 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [reflections, setReflections] = useState<Reflection[]>([]);
   const [entryId, setEntryId] = useState<string | null>(existingEntry?.id || null);
-  const toast = useToast();
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
@@ -36,12 +35,12 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
 
   const handleSave = async () => {
     if (!user) {
-      toast.error("You must be logged in to save entries");
+      toast("You must be logged in to save entries");
       return;
     }
 
     if (!content.trim()) {
-      toast.error("Journal entry cannot be empty");
+      toast("Journal entry cannot be empty");
       return;
     }
 
@@ -100,12 +99,12 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
 
         if (insertError) throw insertError;
 
-        setReflections(savedReflections || []);
-        toast.success("Journal entry saved with reflections");
+        setReflections(savedReflections as Reflection[] || []);
+        toast("Journal entry saved with reflections");
       }
     } catch (error: any) {
       console.error("Error saving journal entry:", error);
-      toast.error(error.message || "An error occurred while saving");
+      toast(error.message || "An error occurred while saving");
     } finally {
       setIsSubmitting(false);
     }
@@ -126,7 +125,7 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
         }
         
         if (data) {
-          setReflections(data);
+          setReflections(data as Reflection[]);
         }
       }
     };
