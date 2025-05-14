@@ -1,18 +1,19 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/sonner"; // Corrected this import
+import { toast } from "@/components/ui/sonner";
 import { Loader2 } from "lucide-react";
 
 interface Reflection {
   id?: string;
-  entry_id?: string;
+  entry_id: string;
   type: 'celebration' | 'warning' | 'nudge';
   content: string;
+  created_at?: string;
 }
 
 interface JournalEntryProps {
@@ -85,7 +86,7 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
           .delete()
           .eq('entry_id', id);
 
-        // Insert new reflections
+        // Insert new reflections - fixed type issue here
         const newReflections: Reflection[] = [
           { entry_id: id, type: 'celebration', content: reflectionsResponse.reflections.celebration },
           { entry_id: id, type: 'warning', content: reflectionsResponse.reflections.warning },
@@ -99,7 +100,10 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
 
         if (insertError) throw insertError;
 
-        setReflections(savedReflections as Reflection[] || []);
+        // Correctly cast the returned data
+        if (savedReflections) {
+          setReflections(savedReflections as unknown as Reflection[]);
+        }
         toast("Journal entry saved with reflections");
       }
     } catch (error: any) {
@@ -111,7 +115,7 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
   };
 
   // Load reflections if we have an entry ID
-  React.useEffect(() => {
+  useEffect(() => {
     const loadReflections = async () => {
       if (entryId) {
         const { data, error } = await supabase
@@ -125,7 +129,8 @@ const JournalEntry: React.FC<JournalEntryProps> = ({ existingEntry }) => {
         }
         
         if (data) {
-          setReflections(data as Reflection[]);
+          // Ensure the type matches by casting
+          setReflections(data as unknown as Reflection[]);
         }
       }
     };
