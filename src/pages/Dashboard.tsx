@@ -59,13 +59,7 @@ const Dashboard: React.FC = () => {
               >
                 Home
               </Button>
-              <Button 
-                variant={activeView === "journal" ? "secondary" : "ghost"} 
-                className="w-full justify-start text-gray-300 hover:text-white"
-                onClick={() => setActiveView("journal")}
-              >
-                Journal
-              </Button>
+              {/* Journal tab removed from here */}
             </div>
           </div>
           
