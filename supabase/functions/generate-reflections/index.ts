@@ -1,5 +1,6 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,14 +15,28 @@ serve(async (req) => {
 
   try {
     const { journalContent } = await req.json();
-    const apiKey = Deno.env.get('GEMINI_API_KEY');
-
-    if (!apiKey) {
+    
+    // Create a Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') as string;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Fetch Gemini API key from the database
+    const { data: apiKeyData, error: apiKeyError } = await supabase
+      .from('api_key')
+      .select('key_value')
+      .eq('name', 'GEMINI_API_KEY')
+      .single();
+    
+    if (apiKeyError || !apiKeyData) {
+      console.error('Error fetching Gemini API key:', apiKeyError);
       return new Response(
-        JSON.stringify({ error: 'API key not found' }),
+        JSON.stringify({ error: 'API key not found in database' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
+    const apiKey = apiKeyData.key_value;
 
     // Format the prompt for Gemini
     const prompt = `
