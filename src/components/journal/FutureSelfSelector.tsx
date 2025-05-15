@@ -3,11 +3,9 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/use-toast";
 
 const FutureSelfSelector = () => {
-  const { toast } = useToast();
-  
   const handleSelect = () => {
     toast({
       title: "Starting chat with your 1-Year Self",
