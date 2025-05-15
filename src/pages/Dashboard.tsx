@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { BeamsBackground } from "@/components/ui/beams-background";
 import { Button } from "@/components/ui/button";
@@ -6,10 +7,12 @@ import { Input } from "@/components/ui/input";
 import { SendHorizontal, Plus, Search, Globe, XCircle } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import JournalPage from "@/components/journal/JournalPage";
+import FutureSelectionView from "@/components/journal/FutureSelectionView";
+import Logo from "@/components/Logo";
 
 const Dashboard: React.FC = () => {
   const [message, setMessage] = useState("");
-  const [activeView, setActiveView] = useState<"home" | "journal">("home");
+  const [activeView, setActiveView] = useState<"home" | "journal" | "future">("future");
   
   const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -21,10 +24,7 @@ const Dashboard: React.FC = () => {
         <div className="w-80 bg-black/20 backdrop-blur-lg border-r border-white/10 flex flex-col h-screen">
           <div className="p-4 flex items-center">
             <div className="flex items-center space-x-2">
-              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13 0C5.82 0 0 5.82 0 13C0 20.18 5.82 26 13 26C20.18 26 26 20.18 26 13C26 5.82 20.18 0 13 0ZM13 23.4C7.254 23.4 2.6 18.746 2.6 13C2.6 7.254 7.254 2.6 13 2.6C18.746 2.6 23.4 7.254 23.4 13C23.4 18.746 18.746 23.4 13 23.4Z" fill="white" />
-                <path d="M13 7.8C10.1669 7.8 7.8 10.1669 7.8 13C7.8 15.8331 10.1669 18.2 13 18.2C15.8331 18.2 18.2 15.8331 18.2 13C18.2 10.1669 15.8331 7.8 13 7.8Z" fill="white" />
-              </svg>
+              <Logo />
               <span className="font-bold text-xl text-white">Velum</span>
             </div>
             <div className="ml-auto">
@@ -57,7 +57,13 @@ const Dashboard: React.FC = () => {
               >
                 Home
               </Button>
-              {/* Journal tab removed from here */}
+              <Button 
+                variant={activeView === "future" ? "secondary" : "ghost"} 
+                className="w-full justify-start text-gray-300 hover:text-white"
+                onClick={() => setActiveView("future")}
+              >
+                Future Self
+              </Button>
             </div>
           </div>
           
@@ -102,8 +108,6 @@ const Dashboard: React.FC = () => {
         
         {/* Main Content */}
         <div className="flex-1 flex flex-col h-screen">
-          {/* Header removed from here */}
-          
           <div className="flex-1 overflow-auto p-4">
             <div className="max-w-4xl mx-auto">
               {activeView === "home" ? (
@@ -222,8 +226,10 @@ const Dashboard: React.FC = () => {
                     </Card>
                   </div>
                 </>
-              ) : (
+              ) : activeView === "journal" ? (
                 <JournalPage />
+              ) : (
+                <FutureSelectionView />
               )}
             </div>
           </div>
@@ -246,4 +252,5 @@ const Dashboard: React.FC = () => {
       </div>
     </BeamsBackground>;
 };
+
 export default Dashboard;
