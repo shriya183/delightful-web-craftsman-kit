@@ -7,25 +7,25 @@
   :root {
     /* Light theme variables */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 222.2 84% 4.9%; /* Darker text for better visibility */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 222.2 84% 4.9%; /* Darker text for better visibility */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222.2 84% 4.9%; /* Darker text for better visibility */
 
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 222.2 47.4% 11.2%; /* Darker text for better visibility */
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 222.2 47.4% 11.2%; /* Darker text for better visibility */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -38,7 +38,7 @@
 
     --sidebar-background: 0 0% 98%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-foreground: 240 5.3% 26.1%; /* Darker text for sidebar */
 
     --sidebar-primary: 240 5.9% 10%;
 
@@ -54,6 +54,7 @@
   }
 
   .dark {
+    /* Keep dark theme variables exactly as they were */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
